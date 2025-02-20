@@ -1,5 +1,2 @@
-## Build and Deploy Kanban Web App (React.js, Firebase, Drag & Drop, MUI v5, Zustand, Security Rules)
-
-![Video Thumbnail](https://i3.ytimg.com/vi/5H0I97Pe9YY/maxresdefault.jpg)
-
-Link - https://www.youtube.com/watch?v=5H0I97Pe9YY
+# kanban-board
+A Kanban Board is a visual task management system that helps teams track work progress using a board with multiple columns. Each column represents a different stage of work (e.g., To Do, In Progress, Done), and tasks (represented as draggable cards) move across these columns as they progress.
