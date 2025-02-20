@@ -1,7 +1,7 @@
-import { Card, CardContent, Typography, Chip, Box } from "@mui/material";
-import { AccessTime, Flag, CheckCircle } from "@mui/icons-material";
+import { Card, CardContent, Typography, Chip, Box, IconButton } from "@mui/material";
+import { AccessTime, Flag, CheckCircle, Delete } from "@mui/icons-material";
 
-const TaskCard = ({ task, provided }) => {
+const TaskCard = ({ task, provided, onDeleteTask }) => {
   return (
     <Card
       ref={provided.innerRef}
@@ -16,8 +16,22 @@ const TaskCard = ({ task, provided }) => {
         transition: "0.3s",
         border: "2px solid rgba(255, 255, 255, 0.2)",
         "&:hover": { transform: "scale(1.02)", borderColor: "#FFFFFF55" },
+        position: "relative",
       }}
     >
+      <IconButton
+        onClick={() => onDeleteTask(task.id, task.title)}
+        sx={{
+          position: "absolute",
+          top: 8,
+          right: 8,
+          color: "#FF4C4C",
+          "&:hover": { color: "#D32F2F" },
+        }}
+      >
+        <Delete />
+      </IconButton>
+
       <CardContent>
         <Typography variant="h6" sx={{ fontWeight: "bold", color: "#FFFFFF", marginBottom: 1 }}>
           {task.title}

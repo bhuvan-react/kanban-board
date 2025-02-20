@@ -35,7 +35,7 @@ const taskSchema = z.object({
   }),
 });
 
-const CreateTaskModal = ({ closeModal, userId }) => {
+const CreateTaskModal = ({ closeModal, userId, onSubmitForm }) => {
   const { setToastr } = useStore();
   const [loading, setLoading] = useState(false);
 
@@ -63,9 +63,11 @@ const CreateTaskModal = ({ closeModal, userId }) => {
       };
   
       const docRef = await addDoc(collection(db, "tasks"), taskData);
-      console.log("Task Created with ID:", docRef.id);
+      console.log("Task Created with ID:", docRef);
       setToastr("Task Created Successfully");
       closeModal();
+      console.log(data, docRef, 'check')
+      onSubmitForm(docRef.id, data.title)
     } catch (err) {
       setLoading(false);
       console.error("Error adding task:", err.message);

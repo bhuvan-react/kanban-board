@@ -8,7 +8,7 @@ const statusColors = {
   Done: "#66BB6A",
 };
 
-const TaskColumn = ({ status, tasks }) => {
+const TaskColumn = ({ status, tasks, onDeleteTask }) => {
   console.log(status, "status");
   return (
     <Paper
@@ -63,6 +63,7 @@ const TaskColumn = ({ status, tasks }) => {
                       innerRef={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
+                      onDeleteTask={onDeleteTask}
                     />
                   )}
                 </Draggable>

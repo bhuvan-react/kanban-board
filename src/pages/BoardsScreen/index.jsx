@@ -76,57 +76,36 @@ const KanbanBoard = () => {
     };
   }, []);
 
-  const addTask = async (data) => {
-    const newTask = {
-      ...data,
-      status: "ToDo",
-      createdAt: new Date(),
-      createdBy: userId || "",
-    };
-
-    const taskRef = await addDoc(collection(db, "tasks"), newTask);
-
+  const addTask = async (id, title) => {
+    console.log(id, title, 'check')
     await addDoc(collection(db, "activityLogs"), {
       action: "Task Created",
-      taskId: taskRef.id,
-      taskTitle: data.title,
+      taskId: id,
+      taskTitle: title,
       userId,
       timestamp: new Date(),
     });
-
-    setShowModal(false);
+    setTasks(tasks.filter((task) => task.id !== taskId));
   };
-
-  // const onDragEnd = async (result) => {
-  //   if (!result.destination) return;
-
-  //   const updatedTasks = [...tasks];
-  //   const [movedTask] = updatedTasks.splice(result.source.index, 1);
-  //   const oldStatus = movedTask.status;
-  //   movedTask.status = result.destination.droppableId;
-
-  //   await updateDoc(doc(db, "tasks", movedTask.id), {
-  //     status: movedTask.status,
-  //   });
-
-  //   await addDoc(collection(db, "activityLogs"), {
-  //     action: `Task moved from ${oldStatus} to ${movedTask.status}`,
-  //     taskId: movedTask.id,
-  //     taskTitle: movedTask.title,
-  //     userId,
-  //     timestamp: new Date(),
-  //   });
-  //   updatedTasks.splice(result.destination.index, 0, movedTask);
-  //   setTasks(updatedTasks);
-  // };
+  const deleteTask = async (taskId, taskTitle) => {
+    await deleteDoc(doc(db, "tasks", taskId));
+    await addDoc(collection(db, "activityLogs"), {
+      action: "Task Deleted",
+      taskId,
+      taskTitle,
+      userId,
+      timestamp: new Date(),
+    });
+    setTasks(tasks.filter((task) => task.id !== taskId));
+  };
 
   const onDragEnd = async (result) => {
     console.log("Drag started", tasks);
-    if (!result.destination) return; // Ensure drop happened
+    if (!result.destination) return; 
   console.log("Dragging result:", result);
     const { source, destination, draggableId } = result;
   
-    if (!destination) return; // If dropped outside a column, do nothing
+    if (!destination) return; 
   
     const updatedTasks = [...tasks];
     const movedTaskIndex = updatedTasks.findIndex((task) => task.id === draggableId);
@@ -158,21 +137,6 @@ const KanbanBoard = () => {
   
     setTasks(updatedTasks);
   };
-  
-
-  const deleteTask = async (taskId, taskTitle) => {
-    await deleteDoc(doc(db, "tasks", taskId));
-
-    await addDoc(collection(db, "activityLogs"), {
-      action: "Task Deleted",
-      taskId,
-      taskTitle,
-      userId,
-      timestamp: new Date(),
-    });
-
-    setTasks(tasks.filter((task) => task.id !== taskId));
-  };
 
   return (
     <>
@@ -180,7 +144,7 @@ const KanbanBoard = () => {
       {showModal && (
         <CreateBoardModal
           closeModal={() => setShowModal(false)}
-          onSubmit={addTask}
+          onSubmitForm={addTask}
         />
       )}
 
