@@ -15,6 +15,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../../firebase";
+import './styles.css'
 
 const KanbanBoard = () => {
   const addDummyActivityLogs = async () => {
@@ -183,7 +184,7 @@ const KanbanBoard = () => {
         />
       )}
 
-      <Container sx={{ maxWidth: "none" }}>
+      <Container sx={{ maxWidth: "none" }} className="containerId">
         <Grid container spacing={4} mt={2}>
           <Grid item xs={12} md={8}>
             <DragDropContext onDragEnd={onDragEnd}>

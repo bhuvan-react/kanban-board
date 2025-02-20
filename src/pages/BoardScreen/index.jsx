@@ -8,6 +8,7 @@ import BoardInterface from "./BoardInterface";
 import BoardNotReady from "./BoardNotReady";
 import BoardTopbar from "./BoardTopbar";
 
+
 const BoardScreen = () => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
