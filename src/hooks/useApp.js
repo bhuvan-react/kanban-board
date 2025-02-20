@@ -31,7 +31,7 @@ const useApp = () => {
       const tBoards = boards.filter((board) => board.id !== boardId);
       setBoards(tBoards);
 
-      navigate("/boards");
+      // navigate("/boards");
     } catch (err) {
       setToastr("Error deleting the board");
       throw err;

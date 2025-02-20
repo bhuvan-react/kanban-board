@@ -43,7 +43,6 @@ const KanbanBoard = () => {
         ...doc.data(),
       }));
 
-      // Ensure `dueDate` exists and is a valid date before sorting
       if (sortOrder) {
         fetchedTasks = fetchedTasks.filter((task) => task.dueDate);
         fetchedTasks.sort((a, b) => {
@@ -97,11 +96,11 @@ const KanbanBoard = () => {
 
   const onDragEnd = async (result) => {
     console.log("Drag started", tasks);
-    if (!result.destination) return; // Ensure drop happened
+    if (!result.destination) return; 
     console.log("Dragging result:", result);
     const { source, destination, draggableId } = result;
 
-    if (!destination) return; // If dropped outside a column, do nothing
+    if (!destination) return; 
 
     const updatedTasks = [...tasks];
     const movedTaskIndex = updatedTasks.findIndex(

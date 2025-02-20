@@ -9,7 +9,6 @@ import AppLoader from "./components/layout/AppLoader";
 
 import AuthScreen from "./pages/AuthScreen";
 import BoardsScreen from "./pages/BoardsScreen";
-import BoardScreen from "./pages/BoardScreen";
 
 import PublicOnlyRoute from "./components/utils/PublicOnlyRoute";
 import PrivateRoute from "./components/utils/PrivateRoute";
@@ -41,10 +40,6 @@ const App = () => {
           <Route
             path="/boards"
             element={<PrivateRoute Component={BoardsScreen} />}
-          />
-          <Route
-            path="/boards/:boardId"
-            element={<PrivateRoute Component={BoardScreen} />}
           />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
