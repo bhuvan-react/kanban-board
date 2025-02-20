@@ -95,6 +95,45 @@ const KanbanBoard = () => {
     setTasks(tasks.filter((task) => task.id !== taskId));
   };
 
+  const onDragEnd = async (result) => {
+    console.log("Drag started", tasks);
+    if (!result.destination) return; // Ensure drop happened
+  console.log("Dragging result:", result);
+    const { source, destination, draggableId } = result;
+  
+    if (!destination) return; // If dropped outside a column, do nothing
+  
+    const updatedTasks = [...tasks];
+    const movedTaskIndex = updatedTasks.findIndex((task) => task.id === draggableId);
+  
+    if (movedTaskIndex === -1) return;
+  
+    const movedTask = updatedTasks[movedTaskIndex];
+    const oldStatus = movedTask.status;
+    const newStatus = destination.droppableId;
+  
+    if (oldStatus !== newStatus) {
+      await updateDoc(doc(db, "tasks", draggableId), {
+        status: newStatus,
+      });
+  
+      await addDoc(collection(db, "activityLogs"), {
+        action: `Task moved from ${oldStatus} to ${newStatus}`,
+        taskId: draggableId,
+        taskTitle: movedTask.title,
+        userId,
+        timestamp: serverTimestamp(),
+      });
+  
+      movedTask.status = newStatus;
+    }
+  
+    updatedTasks.splice(movedTaskIndex, 1);
+    updatedTasks.splice(destination.index, 0, movedTask);
+  
+    setTasks(updatedTasks);
+  };
+
   const filteredTasks = tasks
     .filter((task) =>
       task.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -166,7 +205,7 @@ const KanbanBoard = () => {
 
         <Grid container spacing={4} mt={2}>
           <Grid item xs={12} md={8}>
-            <DragDropContext onDragEnd={() => {}}>
+          <DragDropContext onDragEnd={onDragEnd}>
               <Grid container spacing={2}>
                 {["ToDo", "InProgress", "Done"].map((status) => (
                   <Grid item xs={12} sm={4} key={status}>
