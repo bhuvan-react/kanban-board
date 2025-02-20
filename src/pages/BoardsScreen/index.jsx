@@ -162,7 +162,7 @@ const KanbanBoard = () => {
 
       <Container sx={{ maxWidth: "none" }} className="containerId">
         <Grid container spacing={2} mt={1}>
-          <Grid item xs={12} sm={4} className="topAdjust">
+          <Grid item xs={12} sm={4} style={{ marginTop: '-8px' }}>
             <TextField
               fullWidth
               label="Search Tasks"

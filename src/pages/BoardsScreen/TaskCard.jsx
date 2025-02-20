@@ -17,6 +17,7 @@ const TaskCard = ({ task, provided, onDeleteTask }) => {
         border: "2px solid rgba(255, 255, 255, 0.2)",
         "&:hover": { transform: "scale(1.02)", borderColor: "#FFFFFF55" },
         position: "relative",
+        marginTop: '8px'
       }}
     >
       <IconButton
