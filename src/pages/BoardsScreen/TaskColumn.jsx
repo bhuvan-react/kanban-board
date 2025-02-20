@@ -9,18 +9,22 @@ const statusColors = {
 };
 
 const TaskColumn = ({ status, tasks, onDeleteTask }) => {
-  console.log(status, "status");
   return (
     <Paper
       sx={{
         width: "100%",
-        minHeight: 400,
+        minHeight: 500, // Fixed minimum height
+        maxHeight: "80vh", // Prevents overflow
+        display: "flex",
+        flexDirection: "column",
         padding: 2,
         backgroundColor: "#2A2A2A",
         borderRadius: "8px",
         boxShadow: 2,
+        overflow: "hidden", // Prevents overall column from scrolling
       }}
     >
+      {/* Status Title (Fixed, Non-Scrollable) */}
       <Typography
         variant="h6"
         sx={{
@@ -28,21 +32,21 @@ const TaskColumn = ({ status, tasks, onDeleteTask }) => {
           textAlign: "center",
           marginBottom: 2,
           color: statusColors[status] || "white",
+          flexShrink: 0, // Ensures title stays fixed
         }}
       >
         {status} ({tasks.length})
       </Typography>
 
+      {/* Scrollable Task List */}
       <Droppable droppableId={status}>
         {(provided) => (
           <Box
             ref={provided.innerRef}
             {...provided.droppableProps}
             sx={{
-              minHeight: 300,
-              display: "flex",
-              flexDirection: "column",
-              gap: 1,
+              flexGrow: 1, // Allows it to expand
+              overflowY: "auto", // Enables scrolling
               backgroundColor: "#252525",
               borderRadius: "8px",
               padding: 1,
@@ -51,11 +55,7 @@ const TaskColumn = ({ status, tasks, onDeleteTask }) => {
           >
             {tasks.length > 0 ? (
               tasks.map((task, index) => (
-                <Draggable
-                  key={task.id}
-                  draggableId={String(task.id)}
-                  index={index}
-                >
+                <Draggable key={task.id} draggableId={String(task.id)} index={index}>
                   {(provided) => (
                     <TaskCard
                       task={task}
@@ -69,9 +69,7 @@ const TaskColumn = ({ status, tasks, onDeleteTask }) => {
                 </Draggable>
               ))
             ) : (
-              <Typography
-                sx={{ textAlign: "center", padding: 2, color: "gray" }}
-              >
+              <Typography sx={{ textAlign: "center", padding: 2, color: "gray" }}>
                 No tasks
               </Typography>
             )}
