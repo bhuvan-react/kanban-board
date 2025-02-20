@@ -98,25 +98,27 @@ const KanbanBoard = () => {
   const onDragEnd = async (result) => {
     console.log("Drag started", tasks);
     if (!result.destination) return; // Ensure drop happened
-  console.log("Dragging result:", result);
+    console.log("Dragging result:", result);
     const { source, destination, draggableId } = result;
-  
+
     if (!destination) return; // If dropped outside a column, do nothing
-  
+
     const updatedTasks = [...tasks];
-    const movedTaskIndex = updatedTasks.findIndex((task) => task.id === draggableId);
-  
+    const movedTaskIndex = updatedTasks.findIndex(
+      (task) => task.id === draggableId
+    );
+
     if (movedTaskIndex === -1) return;
-  
+
     const movedTask = updatedTasks[movedTaskIndex];
     const oldStatus = movedTask.status;
     const newStatus = destination.droppableId;
-  
+
     if (oldStatus !== newStatus) {
       await updateDoc(doc(db, "tasks", draggableId), {
         status: newStatus,
       });
-  
+
       await addDoc(collection(db, "activityLogs"), {
         action: `Task moved from ${oldStatus} to ${newStatus}`,
         taskId: draggableId,
@@ -124,13 +126,13 @@ const KanbanBoard = () => {
         userId,
         timestamp: serverTimestamp(),
       });
-  
+
       movedTask.status = newStatus;
     }
-  
+
     updatedTasks.splice(movedTaskIndex, 1);
     updatedTasks.splice(destination.index, 0, movedTask);
-  
+
     setTasks(updatedTasks);
   };
 
@@ -205,7 +207,7 @@ const KanbanBoard = () => {
 
         <Grid container spacing={4} mt={2}>
           <Grid item xs={12} md={8}>
-          <DragDropContext onDragEnd={onDragEnd}>
+            <DragDropContext onDragEnd={onDragEnd}>
               <Grid container spacing={2}>
                 {["ToDo", "InProgress", "Done"].map((status) => (
                   <Grid item xs={12} sm={4} key={status}>
@@ -221,19 +223,19 @@ const KanbanBoard = () => {
               </Grid>
             </DragDropContext>
           </Grid>
-
+          
           <Grid item xs={12} md={4}>
+          <Typography variant="h6" gutterBottom>
+            Activity Logs
+          </Typography>
             <Paper
-             sx={{
-              height: "800px", 
-              overflowY: "auto", 
-              backgroundColor: "#37665d",
-              p: 2
-            }}
+              sx={{
+                height: "800px",
+                overflowY: "auto",
+                backgroundColor: "#37665d",
+                p: 2,
+              }}
             >
-              <Typography variant="h6" gutterBottom>
-                Activity Logs
-              </Typography>
               <List sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
                 {activityLog.length > 0 ? (
                   activityLog.map((log, index) => (
