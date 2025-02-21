@@ -20,23 +20,23 @@ const useApp = () => {
   const {
     currentUser: { uid },
   } = getAuth();
-  const boardsColRef = collection(db, `users/${uid}/boards`);
-  const { boards, setBoards, addBoard, setToastr } = useStore();
-  console.log(boards, 'boards')
-  const deleteBoard = async (boardId) => {
-    try {
-      const docRef = doc(db, `users/${uid}/boards/${boardId}`);
-      await deleteDoc(docRef);
+  // const boardsColRef = collection(db, `users/${uid}/boards`);
+  // const { boards, setBoards, addBoard, setToastr } = useStore();
+  // console.log(boards, 'boards')
+  // const deleteBoard = async (boardId) => {
+  //   try {
+  //     const docRef = doc(db, `users/${uid}/boards/${boardId}`);
+  //     await deleteDoc(docRef);
 
-      const tBoards = boards.filter((board) => board.id !== boardId);
-      setBoards(tBoards);
+  //     const tBoards = boards.filter((board) => board.id !== boardId);
+  //     setBoards(tBoards);
 
-      // navigate("/boards");
-    } catch (err) {
-      setToastr("Error deleting the board");
-      throw err;
-    }
-  };
+  //     // navigate("/boards");
+  //   } catch (err) {
+  //     setToastr("Error deleting the board");
+  //     throw err;
+  //   }
+  // };
 
   const updateBoardData = async (boardId, tabs) => {
     const docRef = doc(db, `users/${uid}/boardsData/${boardId}`);
