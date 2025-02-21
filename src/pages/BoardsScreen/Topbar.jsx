@@ -37,7 +37,7 @@ const Topbar = ({ openModal }) => {
                 <CreateBoardIcon />
               </IconButton>
               <IconButton onClick={() => signOut(auth)}>
-                <LogoutIcon /> {/* Updated Logout Icon */}
+                <LogoutIcon />
               </IconButton>
             </>
           ) : (
@@ -45,7 +45,7 @@ const Topbar = ({ openModal }) => {
               <Button
                 onClick={openModal}
                 sx={{
-                  backgroundColor: "#1976d2", // Updated background color
+                  backgroundColor: "#1976d2", 
                   color: "#fff",
                   "&:hover": {
                     backgroundColor: "#115293",
@@ -56,7 +56,7 @@ const Topbar = ({ openModal }) => {
               </Button>
               <Button
                 onClick={() => signOut(auth)}
-                startIcon={<LogoutIcon />} // Updated Logout Icon
+                startIcon={<LogoutIcon />} 
                 color="inherit"
               >
                 Logout

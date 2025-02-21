@@ -195,6 +195,7 @@ const KanbanBoard = () => {
               <Select
                 value={sortOrder}
                 onChange={(e) => setSortOrder(e.target.value)}
+                label="Sort by Due Date"
               >
                 <MenuItem value="">None</MenuItem>
                 <MenuItem value="asc">Ascending</MenuItem>
