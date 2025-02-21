@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Container, Stack, TextField, Button, Typography } from "@mui/material";
-import BrandLogo from "../../assets/logo.svg";
-import ImageComponent from "../../components/utils/ImageEl";
+import googlelogo from "../../assets/google.svg";
 import { auth } from "../../firebase";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 import useStore from "../../store";
 
@@ -49,6 +50,21 @@ const LoginPage = () => {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    try {
+      setIsProcessing(true);
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+      console.log(provider);
+      console.log("User Info:", provider.user);
+      setToastr(`Welcome ${result.user.displayName}`);
+    } catch (err) {
+      setToastr("Google Sign-In Failed");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   return (
     <Container
       maxWidth="xs"
@@ -58,10 +74,10 @@ const LoginPage = () => {
     >
       <Stack mb={6} spacing={4} alignItems="center" textAlign="center">
         <Typography color="rgba(255,255,255, .6)">
-        Boost productivity with seamless task management.
+          Boost productivity with seamless task management.
         </Typography>
       </Stack>
-      
+
       <Typography variant="h5" fontWeight={700} textAlign="center" mb={2}>
         {isSigningIn ? "Sign In to Your Account" : "Create a New Account"}
       </Typography>
@@ -122,22 +138,54 @@ const LoginPage = () => {
         />
         <Button
           disabled={
-            isProcessing || !credentials.email.trim() || !credentials.password.trim()
+            isProcessing ||
+            !credentials.email.trim() ||
+            !credentials.password.trim()
           }
           onClick={processAuthentication}
           size="large"
           variant="contained"
-          style={{ borderRadius: '6px' }}
+          style={{ borderRadius: "6px" }}
         >
           {isSigningIn ? "Sign In" : "Create Account"}
         </Button>
-        <Button
+        {/* <Button
           onClick={() => setIsSigningIn((prev) => !prev)}
           size="small"
           variant="text"
           sx={{ mt: 1, textTransform: "none" }}
         >
           {isSigningIn ? "New here? Create an account" : "Already a member? Sign in"}
+        </Button> */}
+        <Button
+          onClick={handleGoogleSignIn}
+          size="medium"
+          variant="contained"
+          sx={{
+            backgroundColor: "#ffffff",
+            color: "#000",
+            borderRadius: "50px",
+            padding: "8px 16px",
+            minWidth: "auto",
+            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            fontSize: "14px",
+            fontWeight: "500",
+            transition: "all 0.3s ease",
+            "&:hover": {
+              backgroundColor: "#f1f1f1",
+              boxShadow: "0px 6px 10px rgba(0, 0, 0, 0.15)",
+            },
+          }}
+        >
+          <img
+            src={googlelogo}
+            alt="Google"
+            style={{ width: "18px", height: "18px" }}
+          />
+          <span>Google</span>
         </Button>
       </Stack>
     </Container>
